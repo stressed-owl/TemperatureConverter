@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">TemperatureConverter</string>
+    <string name="main_title">Celsius to Fahrenheit? Or maybe Fahrenheit to Celsius? Maybe both?</string>
+    <string name="celsius">From C to F</string>
+    <string name="fahrenheit">From F to C</string>
+    <string name="round">Round?</string>
+    <string name="from_celsius_to_fahrenheit">%1s℃ = %2s℉</string>
+    <string name="from_fahrenheit_to_celsius">%1s℉ = %2s℃</string>
+</resources>
