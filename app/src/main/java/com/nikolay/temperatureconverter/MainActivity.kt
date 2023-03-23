@@ -5,6 +5,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
@@ -30,6 +32,7 @@ import com.nikolay.temperatureconverter.ui.theme.TemperatureConverterTheme
 import com.nikolay.temperatureconverter.ui.theme.jetBlack
 import com.nikolay.temperatureconverter.ui.theme.openSans
 import com.nikolay.temperatureconverter.ui.theme.whiteSmoke
+import kotlin.random.Random
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,7 +56,7 @@ fun ConverterUI() {
     var celsiusInput by rememberSaveable { mutableStateOf("") }
     var fahrenheitInput by rememberSaveable { mutableStateOf("") }
     var round by rememberSaveable { mutableStateOf(false) }
-//    var backgroundColor by remember { mutableStateOf(whiteSmoke) }
+    var backgroundColor by remember { mutableStateOf(whiteSmoke) }
 
     val celsiusValue = celsiusInput.toDoubleOrNull() ?: 0.0
     val fahrenheitValue = fahrenheitInput.toDoubleOrNull() ?: 0.0
@@ -63,76 +66,88 @@ fun ConverterUI() {
     val celsiusToFahrenheit = celsiusToFahrenheit(celsiusValue, round)
     val fahrenheitToCelsius = fahrenheitToCelsius(fahrenheitValue, round)
 
-    Column(
-        Modifier
-            .padding(22.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Image(
-            painter = painterResource(R.drawable.ice),
-            contentDescription = null,
-            Modifier
-                .height(225.dp),
-        )
-        Text(
-            text = stringResource(R.string.main_title),
-            fontSize = 20.sp,
-            color = jetBlack,
-            fontFamily = openSans,
-            fontWeight = FontWeight.Bold,
-            textAlign = TextAlign.Center,
-            lineHeight = 30.sp,
-        )
-        NumberField(
-            label = R.string.celsius,
-            value = celsiusInput,
-            onChangeValue = { celsiusInput = it },
-            keyboardOptions = KeyboardOptions.Default.copy(
-                keyboardType = KeyboardType.Number,
-                imeAction = ImeAction.Next,
-            ),
-            keyboardActions = KeyboardActions(
-                onNext = { focusManager.moveFocus(FocusDirection.Down) }
-            ),
-        )
-        NumberField(
-            label = R.string.fahrenheit,
-            value = fahrenheitInput,
-            onChangeValue = { fahrenheitInput = it },
-            keyboardOptions = KeyboardOptions.Default.copy(
-                keyboardType = KeyboardType.Number,
-                imeAction = ImeAction.Done,
-            ),
-            keyboardActions = KeyboardActions(
-                onDone = { focusManager.clearFocus() }
+    Box(Modifier
+        .fillMaxSize()
+        .background(backgroundColor)
+        .clickable {
+            backgroundColor = Color(
+                Random.nextFloat(),
+                Random.nextFloat(),
+                Random.nextFloat(),
+                1f,
             )
-        )
-        Text(
-            text = stringResource(
-                R.string.from_celsius_to_fahrenheit,
-                celsiusInput,
-                celsiusToFahrenheit,
-            ),
-            fontSize = 20.sp,
-            fontFamily = openSans,
-            fontWeight = FontWeight.Normal,
-        )
-        Text(
-            text = stringResource(
-                R.string.from_fahrenheit_to_celsius,
-                fahrenheitInput,
-                fahrenheitToCelsius,
-            ),
-            fontSize = 20.sp,
-            fontFamily = openSans,
-            fontWeight = FontWeight.Normal,
-        )
-        Round(
-            checked = round,
-            onCheckedChange = { round = !round },
-            text = R.string.round,
-        )
+        }) {
+        Column(
+            Modifier
+                .padding(22.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            Image(
+                painter = painterResource(R.drawable.ice),
+                contentDescription = null,
+                Modifier
+                    .height(225.dp),
+            )
+            Text(
+                text = stringResource(R.string.main_title),
+                fontSize = 20.sp,
+                color = jetBlack,
+                fontFamily = openSans,
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Center,
+                lineHeight = 30.sp,
+            )
+            NumberField(
+                label = R.string.celsius,
+                value = celsiusInput,
+                onChangeValue = { celsiusInput = it },
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    keyboardType = KeyboardType.Number,
+                    imeAction = ImeAction.Next,
+                ),
+                keyboardActions = KeyboardActions(
+                    onNext = { focusManager.moveFocus(FocusDirection.Down) }
+                ),
+            )
+            NumberField(
+                label = R.string.fahrenheit,
+                value = fahrenheitInput,
+                onChangeValue = { fahrenheitInput = it },
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    keyboardType = KeyboardType.Number,
+                    imeAction = ImeAction.Done,
+                ),
+                keyboardActions = KeyboardActions(
+                    onDone = { focusManager.clearFocus() }
+                ),
+            )
+            Text(
+                text = stringResource(
+                    R.string.from_celsius_to_fahrenheit,
+                    celsiusInput,
+                    celsiusToFahrenheit,
+                ),
+                fontSize = 20.sp,
+                fontFamily = openSans,
+                fontWeight = FontWeight.Normal,
+            )
+            Text(
+                text = stringResource(
+                    R.string.from_fahrenheit_to_celsius,
+                    fahrenheitInput,
+                    fahrenheitToCelsius,
+                ),
+                fontSize = 20.sp,
+                fontFamily = openSans,
+                fontWeight = FontWeight.Normal,
+            )
+            Round(
+                checked = round,
+                onCheckedChange = { round = !round },
+                text = R.string.round,
+            )
+        }
     }
 }
 
@@ -167,7 +182,7 @@ fun RoundText(@StringRes text: Int) {
     Text(
         text = stringResource(text),
         fontSize = 20.sp,
-        color = jetBlack
+        color = jetBlack,
     )
 }
 
