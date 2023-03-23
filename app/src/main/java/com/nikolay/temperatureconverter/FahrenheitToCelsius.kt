@@ -1,7 +1,9 @@
 package com.nikolay.temperatureconverter
 
+import androidx.annotation.VisibleForTesting
 import kotlin.math.round
 
+@VisibleForTesting
 internal fun fahrenheitToCelsius(
     fahrenheit: Double,
     isRound: Boolean,
